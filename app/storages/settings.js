@@ -7,7 +7,8 @@ Storage.reopenClass({
   initialState() {
     return {
       theme: config.APP.defaultTheme,
-      socketUrl: config.APP.socketUrl
+      socketUrl: config.APP.socketUrl,
+      enablePush: false
     };
   }
 });

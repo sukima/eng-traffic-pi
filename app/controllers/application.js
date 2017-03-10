@@ -2,11 +2,15 @@ import Ember from 'ember';
 import { storageFor } from 'ember-local-storage';
 import { timeoutProxy } from '../utils/timmers';
 import Konami from 'ember-konami/mixins/konami';
+import config from '../config/environment';
 
 const {
   Controller, get, set, observer,
+  run: { throttle },
   inject: { service }
 } = Ember;
+
+const NOTIFICATION_DELAY = 5000;
 
 const THEME_CLASS_LIST = 'dark-grey dark solarized-dark standard markdown';
 
@@ -19,9 +23,8 @@ const EASTER_EGGS = [
   'TurnDownForWhat'
 ];
 
-export default Controller.extend(Konami, {
-  easterEgg: EASTER_EGGS[Math.floor(Math.random() * EASTER_EGGS.length)],
-
+let ApplicationController = Controller.extend({
+  push: service(),
   pinUpdater: service(),
   settings: storageFor('settings'),
 
@@ -37,6 +40,23 @@ export default Controller.extend(Konami, {
   }),
 
   onPinUpdate() {
-    set(this, 'updateNotice', timeoutProxy(5000));
+    set(this, 'updateNotice', timeoutProxy(NOTIFICATION_DELAY));
+    if (get(this, 'settings.enablePush')) {
+      throttle(this, 'desktopNotify', NOTIFICATION_DELAY);
+    }
+  },
+
+  desktopNotify() {
+    get(this, 'push').create('Engineering Traffic Light update', {
+      body: 'The engineering traffic light has been updated'
+    });
   }
 });
+
+if (config.enableEasterEggs) {
+  ApplicationController = ApplicationController.extend(Konami, {
+    easterEgg: EASTER_EGGS[Math.floor(Math.random() * EASTER_EGGS.length)]
+  });
+}
+
+export default ApplicationController;

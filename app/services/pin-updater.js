@@ -9,7 +9,7 @@ export default Service.extend(Evented, {
   onUpdate(data) {
     const store = get(this, 'store');
     store.pushPayload('pin', data);
-    this.trigger('update');
+    this.trigger('update', data);
   },
 
   start() {

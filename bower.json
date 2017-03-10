@@ -3,6 +3,7 @@
   "dependencies": {
     "urijs": "^1.18.9",
     "socket.io-client": "^1.7.2",
-    "mousetrap": "ccampbell/mousetrap=ccampbell/mousetrap#^1.6.0"
+    "mousetrap": "ccampbell/mousetrap=ccampbell/mousetrap#^1.6.0",
+    "push.js": "^0.0.12"
   }
 }

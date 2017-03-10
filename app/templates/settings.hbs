@@ -8,7 +8,7 @@
 
 <h2>Settings</h2>
 
-<form class="form">
+<div class="form">
   <fieldset class="form-group">
     <label for="socketUrl">Socket IO URL:</label>
     {{input
@@ -17,6 +17,7 @@
         class="form-control"
         value=settings.socketUrl}}
   </fieldset>
+
   {{#unless (eq settings.socketUrl originalUrl)}}
     <button
         class="btn btn-error btn-block"
@@ -24,7 +25,13 @@
       You need to reload the page when this changes.
     </button>
   {{/unless}}
-</form>
+
+  <button
+      class="btn {{if settings.enablePush 'btn-success' 'btn-default'}}"
+      onclick={{action "togglePushNotifications"}}>
+    Desktop Notifications {{if settings.enablePush "On" "Off"}}
+  </button>
+</div>
 
 <h2>Theme</h2>
 
@@ -60,9 +67,11 @@
   </button>
 </div>
 
-<p>
-  <div class="alert alert-default">
-    Have you tried the Kanomi code lately?
-    <code>↑ ↑ ↓ ↓ ← → ← → B A</code>
-  </div>
-</p>
+{{#if hasEasterEggs}}
+  <p>
+    <div class="alert alert-default">
+      Have you tried the Kanomi code lately?
+      <code>↑ ↑ ↓ ↓ ← → ← → B A</code>
+    </div>
+  </p>
+{{/if}}
