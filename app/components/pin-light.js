@@ -11,7 +11,7 @@ const PIN_CLASSES = {
 
 const PIN_DESCRIPTIONS = {
   'Red Light': 'In a meeting; do not disturb. Inturupt only if the site is down.',
-  'Yellow Light': 'Hard at work focusing. Inturup if it is urgent or extreamly quick.',
+  'Yellow Light': 'Hard at work focusing. Inturupt if it is urgent or extreamly quick.',
   'Green Light': 'Come on in and hang out. If the door is closed feel free to open it.'
 };
 
