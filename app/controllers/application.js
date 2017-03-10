@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { storageFor } from 'ember-local-storage';
 import { timeoutProxy } from '../utils/timmers';
+import Konami from 'ember-konami/mixins/konami';
 
 const {
   Controller, get, set, observer,
@@ -9,7 +10,18 @@ const {
 
 const THEME_CLASS_LIST = 'dark-grey dark solarized-dark standard markdown';
 
-export default Controller.extend({
+const EASTER_EGGS = [
+  // 'FontBomb',
+  'KatamariHack',
+  // 'KickAss',
+  'Raptor',
+  'Cornify',
+  'TurnDownForWhat'
+];
+
+export default Controller.extend(Konami, {
+  easterEgg: EASTER_EGGS[Math.floor(Math.random() * EASTER_EGGS.length)],
+
   pinUpdater: service(),
   settings: storageFor('settings'),
 
