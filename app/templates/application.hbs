@@ -1,5 +1,28 @@
-<div class="hack container">
+<div class="container">
+  <div
+      class="update-status alert alert-info pull-right {{if updateNotice.isPending 'in'}}"
+      aria-hidden={{if updateNotice.isPending 'false' 'true'}}>
+    Pin statuses updated
+  </div>
+
   <h1>Engineering Traffic Light</h1>
 
-  {{outlet}}
+  <div id="route-actions" class="btn-group">
+    {{#link-to "index"
+        tagName="button"
+        class="btn btn-default"
+        activeClass="btn-info"}}
+      Home
+    {{/link-to}}
+    {{#link-to "settings"
+        tagName="button"
+        class="btn btn-default"
+        activeClass="btn-info"}}
+      Settings
+    {{/link-to}}
+  </div>
+
+  <div class="main-content">
+    {{outlet}}
+  </div>
 </div>

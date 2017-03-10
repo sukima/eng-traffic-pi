@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { storageFor } from 'ember-local-storage';
 
 const {
   Service, get, set,
@@ -7,10 +8,12 @@ const {
 
 export default Service.extend({
   socketIo: service(),
+  settings: storageFor('settings'),
 
   init() {
     const io = get(this, 'socketIo');
-    let socket = io.socketFor('http://localhost:4200/');
+    let host = get(this, 'settings.socketUrl');
+    let socket = io.socketFor(host);
     set(this, 'socket', socket);
   }
 });

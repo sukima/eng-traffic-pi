@@ -1,14 +1,15 @@
 import Ember from 'ember';
 
-const { Service, get, inject: { service } } = Ember;
+const { Service, Evented, get, inject: { service } } = Ember;
 
-export default Service.extend({
+export default Service.extend(Evented, {
   io: service(),
   store: service(),
 
   onUpdate(data) {
     const store = get(this, 'store');
     store.pushPayload('pin', data);
+    this.trigger('update');
   },
 
   start() {

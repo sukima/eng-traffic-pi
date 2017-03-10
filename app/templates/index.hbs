@@ -1,0 +1,18 @@
+<div class="pin-lights">
+  {{#each pins as |pin|}}
+    {{pin-light pin=pin update=(action "setPin" pin)}}
+  {{else}}
+    <div class="alert alert-warning">
+      No light configurations found on RaspberryPi
+    </div>
+  {{/each}}
+</div>
+
+{{#ember-wormhole to="route-actions"}}
+  <button
+      class="btn btn-primary"
+      disabled={{isAllPinsOff}}
+      onclick={{action "setPin" null}}>
+    Turn off
+  </button>
+{{/ember-wormhole}}
