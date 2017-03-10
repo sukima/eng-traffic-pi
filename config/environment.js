@@ -20,6 +20,8 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+      defaultTheme: 'standard',
+      socketUrl: 'http://localhost:4200/'
     }
   };
 
@@ -43,7 +45,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-
+    ENV.APP.socketUrl = 'http://10.0.0.100:5000/';
   }
 
   return ENV;

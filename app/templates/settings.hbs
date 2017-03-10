@@ -1,0 +1,61 @@
+<p>
+  <button
+      class="btn btn-warning"
+      onclick={{action "resetSettings"}}>
+    Reset Settings
+  </button>
+</p>
+
+<h2>Settings</h2>
+
+<form class="form">
+  <fieldset class="form-group">
+    <label for="socketUrl">Socket IO URL:</label>
+    {{input
+        id="socketUrl"
+        type="text"
+        class="form-control"
+        value=settings.socketUrl}}
+  </fieldset>
+  {{#unless (eq settings.socketUrl originalUrl)}}
+    <button
+        class="btn btn-error btn-block"
+        onclick={{action "refreshBrowser"}}>
+      You need to reload the page when this changes.
+    </button>
+  {{/unless}}
+</form>
+
+<h2>Theme</h2>
+
+<div class="btn-group">
+  <button
+      class="btn {{if (eq settings.theme 'markdown') 'btn-info' 'btn-default btn-ghost'}}"
+      onclick={{action (mut settings.theme) "markdown"}}>
+    Markdown
+  </button>
+
+  <button
+      class="btn {{if (eq settings.theme 'dark') 'btn-info' 'btn-default btn-ghost'}}"
+      onclick={{action (mut settings.theme) "dark"}}>
+    Dark
+  </button>
+
+  <button
+      class="btn {{if (eq settings.theme 'standard') 'btn-info' 'btn-default btn-ghost'}}"
+      onclick={{action (mut settings.theme) "standard"}}>
+    Standard
+  </button>
+
+  <button
+      class="btn {{if (eq settings.theme 'dark-grey') 'btn-info' 'btn-default btn-ghost'}}"
+      onclick={{action (mut settings.theme) "dark-grey"}}>
+    Dark Grey
+  </button>
+
+  <button
+      class="btn {{if (eq settings.theme 'solarized-dark') 'btn-info' 'btn-default btn-ghost'}}"
+      onclick={{action (mut settings.theme) "solarized-dark"}}>
+    Solarized Dark
+  </button>
+</div>

@@ -22,6 +22,9 @@ module.exports = function(defaults) {
 
   app.import('vendor/hack/hack.css');
   app.import('vendor/hack/standard.css');
+  app.import('vendor/hack/dark.css');
+  app.import('vendor/hack/dark-grey.css');
+  app.import('vendor/hack/solarized-dark.css');
 
   return app.toTree();
 };
