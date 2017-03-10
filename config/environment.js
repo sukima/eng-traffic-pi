@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
   var ENV = {
-    modulePrefix: 'scf-traffic-pi',
+    modulePrefix: 'eng-traffic-pi',
     environment: environment,
     rootURL: '/',
     locationType: 'auto',
