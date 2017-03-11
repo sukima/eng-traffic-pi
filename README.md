@@ -1,7 +1,51 @@
 # eng-traffic-pi
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+This is a client project for a simple traffic light to tell your coworkers in
+the office when it is ok to interupt you.
+
+The idea is a RaspberryPi runs a wb server that this Ember app connects to via
+socket.io. You then can control the traffic light and the corrisponding GPIO
+pins toggle on the RaspberryPi.
+
+The setup uses the
+[Pi-GPIO-Server](https://github.com/projectweekend/Pi-GPIO-Server) project.
+A simple LED setup like this diagram:
+
+<img src="wire-diagram.png" width="300" alt="RaspberryPi GPIO wiring diagram">
+
+And this project configured to point to the Pi-GPIO-Server.
+
+## Configuration
+
+Client side settingas are stored in `localStorage`. The initial defaults are
+defined in `config/environment.js`.
+
+#### `ENV.enableEasterEggs`
+
+* **Default:** `true`
+* **User customizable:** NO
+
+If you do not which to include the [Konami
+code](https://en.wikipedia.org/wiki/Konami_Code) Easter eggs you can set this
+to false.
+
+#### `ENV.APP.defaultTheme`
+
+* **Default:** `standard`
+* **User customizable:** YES
+
+Sets the [hack.css](http://hackcss.com/) theme.
+
+#### `ENV.APP.socketUrl`
+
+* **Default:** `http://localhost:4200/` (dev) / `http://10.0.0.100:5000/` (prod)
+* **User customizable:** YES
+
+This is the socket.io URL to connect to. In development mode it is the same as
+the ember server because there is a mock socket.io server that gets started
+when you run `ember serve` for demo / development purposes. This should point
+to your RaspberryPi's IP address (Pi-GPIO-Server defaults to port 5000) in
+production.
 
 ## Prerequisites
 
