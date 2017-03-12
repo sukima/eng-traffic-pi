@@ -1,19 +1,14 @@
 import Ember from 'ember';
-import { timeout } from '../utils/timmers';
 
 const {
   Route, get,
-  inject: { service },
-  RSVP: { all }
+  inject: { service }
 } = Ember;
 
 export default Route.extend({
   store: service(),
 
   model() {
-    return all([
-      get(this, 'store').findAll('pin'),
-      timeout(1000)
-    ]).then(result => result[0]);
+    return get(this, 'store').findAll('pin');
   }
 });
