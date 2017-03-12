@@ -1,26 +1,19 @@
 import Ember from 'ember';
-import { lookup } from '../utils/computed';
 
-const { Component, get } = Ember;
-
-const PIN_CLASSES = {
-  'Red Light': 'red',
-  'Yellow Light': 'yellow',
-  'Green Light': 'green'
-};
-
-const PIN_DESCRIPTIONS = {
-  'Red Light': 'In a meeting; do not disturb. Inturupt only if the site is down.',
-  'Yellow Light': 'Hard at work focusing. Inturupt if it is urgent or extreamly quick.',
-  'Green Light': 'Come on in and hang out. If the door is closed feel free to open it.'
-};
+const { Component, get, computed, isPresent } = Ember;
 
 export default Component.extend({
   classNames: ['pin-light', 'grid', 'clickable'],
   classNameBindings: ['pin.enabled:on:off'],
 
-  bulbClass: lookup('pin.name', PIN_CLASSES),
-  description: lookup('pin.name', PIN_DESCRIPTIONS),
+  bulbStyle: computed('pin.color', {
+    get() {
+      let color = get(this, 'pin.color');
+      return isPresent(color) ?
+        `background-color: ${get(this, 'pin.color')};`.htmlSafe() :
+        '';
+    }
+  }),
 
   actions: {
     updatePinValue() {

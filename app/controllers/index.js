@@ -7,7 +7,7 @@ const {
 } = Ember;
 
 export default Controller.extend({
-  sortBy: ['sortOrder:asc'],
+  sortBy: ['order:asc'],
   pins: sort('model', 'sortBy'),
 
   isAllPinsOff: computed('pins.@each.enabled', {

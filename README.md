@@ -15,9 +15,56 @@ A simple LED setup like this diagram:
 
 And this project configured to point to the Pi-GPIO-Server.
 
-## Configuration
+## Server Configuration
 
-Client side settingas are stored in `localStorage`. The initial defaults are
+To help facilitate a better server client relationship the important values
+that describe a _bulb_ are configured on the server. And because of the design
+of the Pi-GPIO-Server there is only **one** configuration option we can use to
+send over: **name**.
+
+The client expects the following data in the **name** property of the server
+pins' `config/pins.yml`. The format is expected to be a JSON string payload.
+
+#### `name`
+
+The name of the pin
+
+#### `color`
+
+A compatible CSS color value for this pin.
+
+#### `order`
+
+An optional number that can be used to order the lights when the client lists
+them (ascending).
+
+#### `description`
+
+Description of the meaning for this pin.
+
+### Example
+
+For example if you wanted a traffic light then the server's `config/pins.yml`
+might look like this:
+
+```yaml
+17:
+  name: '{name:"Green Light",color:"#2ecc71",order:30,description:"Come on in and hang out. If the door is closed feel free to open it."}'
+  mode: OUT
+  initial: LOW
+18:
+  name: '{name:"Yellow Light",color:"#f1c40f",order:20,description:"Hard at work focusing. Inturupt if it is urgent or extreamly quick."}'
+  mode: OUT
+  initial: LOW
+27:
+  name: '{name:"Red Light",color:"#e74c3c",order:10,description:"In a meeting; do not disturb. Inturupt only if the site is down."}'
+  mode: OUT
+  initial: LOW
+```
+
+## Client Configuration
+
+Client side settings are stored in `localStorage`. The initial defaults are
 defined in `config/environment.js`.
 
 #### `ENV.enableEasterEggs`

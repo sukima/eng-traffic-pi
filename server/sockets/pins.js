@@ -2,10 +2,31 @@
 var util = require('util');
 var GPIOPin = require('../lib/gpio-pin');
 
+var greenLight = new GPIOPin(17, {
+  name: 'Green Light',
+  color: '#2ecc71',
+  order: 30,
+  description: 'Come on in and hang out. If the door is closed feel free to open it.'
+});
+
+var yellowLight = new GPIOPin(18, {
+  name: 'Yellow Light',
+  color: '#f1c40f',
+  order: 20,
+  description: 'Hard at work focusing. Inturupt if it is urgent or extreamly quick.'
+});
+
+var redLight = new GPIOPin(27, {
+  name: 'Red Light',
+  color: '#e74c3c',
+  order: 10,
+  description: 'In a meeting; do not disturb. Inturupt only if the site is down.'
+});
+
 var gpioPins = new Map([
-  [17, new GPIOPin(17, 'Green Light')],
-  [18, new GPIOPin(18, 'Yellow Light')],
-  [27, new GPIOPin(27, 'Red Light')]
+  [17, greenLight],
+  [18, yellowLight],
+  [27, redLight]
 ]);
 
 module.exports = function(io) {

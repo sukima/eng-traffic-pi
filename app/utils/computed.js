@@ -14,11 +14,3 @@ export function numberBoolean(prop) {
     }
   });
 }
-
-export function lookup(prop, hash) {
-  return computed(prop, {
-    get() {
-      return hash[get(this, prop)];
-    }
-  });
-}

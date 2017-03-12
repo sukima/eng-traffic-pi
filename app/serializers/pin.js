@@ -2,10 +2,14 @@ import DS from 'ember-data';
 
 export default DS.JSONSerializer.extend({
   normalize(typeClass, hash) {
+    let subData = JSON.parse(hash.name);
     let data = {
       id: hash.num,
-      name: hash.name,
-      value: hash.value
+      value: hash.value,
+      name: subData.name,
+      color: subData.color,
+      order: subData.order,
+      description: subData.description
     };
     return this._super(typeClass, data);
   },

@@ -16,7 +16,7 @@ class GPIOPin {
       initial: null,
       value: this.value,
       resistor: null,
-      name: this.name,
+      name: JSON.stringify(this.name),
       num: this.num,
       mode: 'OUT',
       event: null,

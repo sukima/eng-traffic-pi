@@ -1,8 +1,9 @@
 <div class="media">
   <div class="media-left">
     <div
-        class="content bulb {{bulbClass}} {{if pin.enabled 'on' 'off'}}"
+        class="content bulb {{if pin.enabled 'on' 'off'}}"
         role="button"
+        style={{bulbStyle}}
         onclick={{action "updatePinValue"}}></div>
   </div>
 
@@ -11,6 +12,6 @@
       {{pin.name}} {{if pin.enabled '<='}}
       <span class="sr-only">{{if pin.enabled 'on' 'off'}}</span>
     </div>
-    <div class="media-content">{{description}}</div>
+    <div class="media-content">{{pin.description}}</div>
   </div>
 </div>
