@@ -9,10 +9,25 @@
 </div>
 
 {{#ember-wormhole to="route-actions"}}
-  <button
-      class="btn btn-primary"
-      disabled={{isAllPinsOff}}
-      onclick={{action "setPin" null}}>
-    Turn off
-  </button>
+  <div>
+    {{#if partyMode.isIdle}}
+      <button
+          class="btn btn-primary"
+          disabled={{isAllPinsOff}}
+          onclick={{action "setPin" null}}>
+        Turn off
+      </button>
+      <button
+          class="btn btn-warning"
+          onclick={{perform partyMode pins}}>
+        Party Mode
+      </button>
+    {{else}}
+      <button
+          class="btn btn-success"
+          onclick={{cancel-all partyMode}}>
+        Normal Mode
+      </button>
+    {{/if}}
+  </div>
 {{/ember-wormhole}}

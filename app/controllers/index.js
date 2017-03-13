@@ -2,12 +2,17 @@ import Ember from 'ember';
 
 const {
   Controller, get, set, isEqual, isBlank,
-  computed, computed: { sort }
+  computed, computed: { sort, reads },
+  inject: { service }
 } = Ember;
 
 export default Controller.extend({
+  pinUpdater: service(),
+
   sortBy: ['order:asc'],
   pins: sort('model', 'sortBy'),
+
+  partyMode: reads('pinUpdater.partyMode'),
 
   isAllPinsOff: computed('pins.@each.enabled', {
     get() {

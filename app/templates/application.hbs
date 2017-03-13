@@ -1,8 +1,12 @@
 <div class="container">
   <div
-      class="update-status alert alert-info pull-right {{if flashNotify.isRunning 'in'}}"
-      aria-hidden={{if flashNotify.isIdle "true" "false"}}>
-    Pin statuses updated
+     class="update-status pull-right alert {{if partyMode.isRunning 'alert-success' 'alert-info'}} {{if showFlash 'in'}}"
+      aria-hidden={{if showFlash "true" "false"}}>
+      {{#if partyMode.isRunning}}
+        It is time to <strong>PARTY!</strong>
+      {{else}}
+        Pin statuses updated
+      {{/if}}
   </div>
 
   <h1>Engineering Traffic Light</h1>

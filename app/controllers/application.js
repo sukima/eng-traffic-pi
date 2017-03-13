@@ -6,6 +6,7 @@ import config from '../config/environment';
 
 const {
   Controller, get, observer,
+  computed: { reads, or },
   inject: { service }
 } = Ember;
 
@@ -32,6 +33,10 @@ let ApplicationController = Controller.extend({
     this.updateApplicationClass();
     get(this, 'pinUpdater').on('update', this, this.onPinUpdate);
   },
+
+  partyMode: reads('pinUpdater.partyMode'),
+
+  showFlash: or('partyMode.isRunning', 'flashNotify.isRunning'),
 
   updateApplicationClass: observer('settings.theme', function () {
     let theme = get(this, 'settings.theme');
