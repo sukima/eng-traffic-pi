@@ -38,26 +38,39 @@ A compatible CSS color value for this pin.
 An optional number that can be used to order the lights when the client lists
 them (ascending).
 
+#### `group`
+
+An optional string that can be used to associate more then one pin with each
+other. All pins of the same group will only have one pin at a time on. If this
+is blank/null/undefined then it will not matter and function independently from
+any other groups.
+
 #### `description`
 
 Description of the meaning for this pin.
 
 ### Example
 
-For example if you wanted a traffic light then the server's `config/pins.yml`
+For example if you wanted a traffic light where red, yellow, and green can only
+allow one light on at a time but also a warning light that can be turned on and
+off independently from the traffic lights then the server's `config/pins.yml`
 might look like this:
 
 ```yaml
 17:
-  name: '{name:"Green Light",color:"#2ecc71",order:30,description:"Come on in and hang out. If the door is closed feel free to open it."}'
+  name: '{"name":"Green Light","color":"#2ecc71","order":30,"group":"traffic","description:"Come on in and hang out. If the door is closed feel free to open it."}'
   mode: OUT
   initial: LOW
 18:
-  name: '{name:"Yellow Light",color:"#f1c40f",order:20,description:"Hard at work focusing. Inturupt if it is urgent or extreamly quick."}'
+  name: '{"name":"Yellow Light","color":"#f1c40f","order":20,"group":"traffic","description":"Hard at work focusing. Inturupt if it is urgent or extreamly quick."}'
   mode: OUT
   initial: LOW
 27:
-  name: '{name:"Red Light",color:"#e74c3c",order:10,description:"In a meeting; do not disturb. Inturupt only if the site is down."}'
+  name: '{"name":"Red Light","color":"#e74c3c","order":10,"group":"traffic","description":"In a meeting; do not disturb. Inturupt only if the site is down."}'
+  mode: OUT
+  initial: LOW
+28:
+  name: '{"name":"Warning Light","color":"#e74c3c","order":40,"description":"Simple warning light"}'
   mode: OUT
   initial: LOW
 ```
