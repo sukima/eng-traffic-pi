@@ -8,6 +8,7 @@ export default Model.extend({
   value: attr('number'),
   color: attr('string'),
   order: attr('number'),
+  group: attr('string'),
   description: attr('string'),
 
   enabled: numberBoolean('value')

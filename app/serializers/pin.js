@@ -1,16 +1,15 @@
+import Ember from 'ember';
 import DS from 'ember-data';
+
+const { assign } = Ember;
 
 export default DS.JSONSerializer.extend({
   normalize(typeClass, hash) {
     let subData = JSON.parse(hash.name);
-    let data = {
+    let data = assign({
       id: hash.num,
-      value: hash.value,
-      name: subData.name,
-      color: subData.color,
-      order: subData.order,
-      description: subData.description
-    };
+      value: hash.value
+    }, subData);
     return this._super(typeClass, data);
   },
 

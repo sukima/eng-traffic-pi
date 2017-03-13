@@ -5,13 +5,15 @@ const { Component, get, computed, isPresent } = Ember;
 export default Component.extend({
   classNames: ['pin-light', 'grid', 'clickable'],
   classNameBindings: ['pin.enabled:on:off'],
+  attributeBindings: ['pin.group:data-group'],
 
   bulbStyle: computed('pin.color', {
     get() {
       let color = get(this, 'pin.color');
-      return isPresent(color) ?
-        `background-color: ${get(this, 'pin.color')};`.htmlSafe() :
+      let style = isPresent(color) ?
+        `background-color: ${get(this, 'pin.color')};` :
         '';
+      return style.htmlSafe();
     }
   }),
 
