@@ -1,12 +1,11 @@
 import Ember from 'ember';
 import { storageFor } from 'ember-local-storage';
-import { timeoutProxy } from '../utils/timmers';
+import { task, timeout } from 'ember-concurrency';
 import Konami from 'ember-konami/mixins/konami';
 import config from '../config/environment';
 
 const {
-  Controller, get, set, observer,
-  run: { throttle },
+  Controller, get, observer,
   inject: { service }
 } = Ember;
 
@@ -40,17 +39,23 @@ let ApplicationController = Controller.extend({
   }),
 
   onPinUpdate() {
-    set(this, 'updateNotice', timeoutProxy(NOTIFICATION_DELAY));
-    if (get(this, 'settings.enablePush')) {
-      throttle(this, 'desktopNotify', NOTIFICATION_DELAY);
-    }
+    get(this, 'flashNotify').perform();
+    get(this, 'desktopNotify').perform();
   },
 
-  desktopNotify() {
+  flashNotify: task(function * () {
+    yield timeout(NOTIFICATION_DELAY);
+  }).restartable(),
+
+  desktopNotify: task(function * () {
+    if (!get(this, 'settings.enablePush')) {
+      return;
+    }
     get(this, 'push').create('Engineering Traffic Light update', {
       body: 'The engineering traffic light has been updated'
     });
-  }
+    yield timeout(NOTIFICATION_DELAY);
+  }).drop()
 });
 
 if (config.enableEasterEggs) {

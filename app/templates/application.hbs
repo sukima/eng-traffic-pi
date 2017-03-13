@@ -1,7 +1,7 @@
 <div class="container">
   <div
-      class="update-status alert alert-info pull-right {{if updateNotice.isPending 'in'}}"
-      aria-hidden={{if updateNotice.isPending 'false' 'true'}}>
+      class="update-status alert alert-info pull-right {{if flashNotify.isRunning 'in'}}"
+      aria-hidden={{if flashNotify.isIdle "true" "false"}}>
     Pin statuses updated
   </div>
 
