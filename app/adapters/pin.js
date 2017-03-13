@@ -2,18 +2,15 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 const {
-  get, assert, isPresent, runInDebug,
+  get, set, assert, isPresent, runInDebug,
   inject: { service },
   RSVP: { Promise }
 } = Ember;
 
 const { AdapterError } = DS;
 
-export default DS.Adapter.extend({
-  io: service(),
-
-  sendRecv(name, payload) {
-    let socket = get(this, 'io.socket');
+function socketPromise(socket, name, payload) {
+  return function() {
     let resoler, rejector;
     return new Promise((resolve, reject) => {
       resoler = resolve;
@@ -22,7 +19,7 @@ export default DS.Adapter.extend({
       socket.on('error', reject);
       runInDebug(() => console.log(`SocketIO: emit '${name}'`, payload));
       socket.emit(name, payload);
-    }, 'adapter/pin#sendRecv')
+    }, `Adapter: 'pin' socket.io resolver`)
     .then(data => {
       runInDebug(() => console.log(`SocketIO: response '${name}'`, data));
       if (isPresent(data.message)) {
@@ -34,6 +31,24 @@ export default DS.Adapter.extend({
       socket.off(name, resoler);
       socket.off('error', rejector);
     });
+  };
+}
+
+export default DS.Adapter.extend({
+  io: service(),
+
+  init() {
+    this._super(...arguments);
+    set(this, '_promiseChain', Promise.resolve());
+  },
+
+  sendRecv(name, payload) {
+    let socket = get(this, 'io.socket');
+    let promiseChain = get(this, '_promiseChain')
+      .then(socketPromise(socket, name, payload))
+      .catch(socketPromise(socket, name, payload));
+    set(this, '_promiseChain', promiseChain);
+    return promiseChain;
   },
 
   findRecord(store, type, id) {

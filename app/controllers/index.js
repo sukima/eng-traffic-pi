@@ -2,8 +2,7 @@ import Ember from 'ember';
 
 const {
   Controller, get, set, isEqual, isBlank,
-  computed, computed: { sort },
-  RSVP: { resolve }
+  computed, computed: { sort }
 } = Ember;
 
 export default Controller.extend({
@@ -32,22 +31,22 @@ export default Controller.extend({
         selectedPin.toggleProperty('enabled');
         return selectedPin.save();
       }
-      let pins = get(this, 'pins');
-      pins.reduce((memo, pin) => {
+      get(this, 'pins').forEach(pin => {
         if (get(pin, 'group') !== group) {
-          return memo;
+          return;
         }
         set(pin, 'enabled', isEqual(pin, selectedPin));
-        return isBlank(get(pin, 'dirtyType')) ? memo : memo.then(() => pin.save());
-      }, resolve());
+        if (isBlank(get(pin, 'dirtyType'))) {
+          pin.save();
+        }
+      });
     },
 
     clearAllPins() {
-      let pins = get(this, 'pins');
-      pins.reduce((memo, pin) => {
+      get(this, 'pins').forEach(pin => {
         set(pin, 'enabled', false);
-        return isBlank(get(pin, 'dirtyType')) ? memo : memo.then(() => pin.save());
-      }, resolve());
+        pin.save();
+      });
     }
   }
 });
