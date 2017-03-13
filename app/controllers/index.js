@@ -36,7 +36,7 @@ export default Controller.extend({
           return;
         }
         set(pin, 'enabled', isEqual(pin, selectedPin));
-        if (isBlank(get(pin, 'dirtyType'))) {
+        if (get(pin, 'dirtyType') === 'updated') {
           pin.save();
         }
       });
