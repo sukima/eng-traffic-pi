@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import DS from 'ember-data';
+import { task } from 'ember-concurrency';
 
 const {
-  get, set, assert, isPresent, runInDebug,
+  get, assert, isPresent, runInDebug,
   inject: { service },
   RSVP: { Promise }
 } = Ember;
@@ -10,49 +11,39 @@ const {
 const { AdapterError } = DS;
 
 function socketPromise(socket, name, payload) {
-  return function() {
-    let resoler, rejector;
-    return new Promise((resolve, reject) => {
-      resoler = resolve;
-      rejector = reject;
-      socket.on(name, resolve);
-      socket.on('error', reject);
-      runInDebug(() => console.log(`SocketIO: emit '${name}'`, payload));
-      socket.emit(name, payload);
-    }, `Adapter: 'pin' socket.io resolver`)
-    .then(data => {
-      runInDebug(() => console.log(`SocketIO: response '${name}'`, data));
-      if (isPresent(data.message)) {
-        throw new AdapterError(null, data.message);
-      }
-      return data;
-    })
-    .finally(() => {
-      socket.off(name, resoler);
-      socket.off('error', rejector);
-    });
-  };
+  let resoler, rejector;
+  return new Promise((resolve, reject) => {
+    resoler = resolve;
+    rejector = reject;
+    socket.on(name, resolve);
+    socket.on('error', reject);
+    socket.emit(name, payload);
+  }, `Adapter: 'pin' socket.io resolver`)
+  .finally(() => {
+    socket.off(name, resoler);
+    socket.off('error', rejector);
+  });
 }
 
 export default DS.Adapter.extend({
   io: service(),
 
-  init() {
-    this._super(...arguments);
-    set(this, '_promiseChain', Promise.resolve());
-  },
-
-  sendRecv(name, payload) {
+  sendRecv: task(function * (name, payload) {
     let socket = get(this, 'io.socket');
-    let promiseChain = get(this, '_promiseChain')
-      .then(socketPromise(socket, name, payload))
-      .catch(socketPromise(socket, name, payload));
-    set(this, '_promiseChain', promiseChain);
-    return promiseChain;
-  },
+
+    runInDebug(() => console.log(`SocketIO: emit '${name}'`, payload));
+    let data = yield socketPromise(socket, name, payload);
+
+    runInDebug(() => console.log(`SocketIO: response '${name}'`, data));
+    if (isPresent(data.message)) {
+      throw new AdapterError(null, data.message);
+    } else {
+      return data;
+    }
+  }).enqueue().maxConcurrency(1),
 
   findRecord(store, type, id) {
-    return this.sendRecv('pin:read', {num: id});
+    return get(this, 'sendRecv').perform('pin:read', {num: id});
   },
 
   createRecord() {
@@ -61,7 +52,7 @@ export default DS.Adapter.extend({
 
   updateRecord(store, type, snapshot) {
     let payload = this.serialize(snapshot, {includeId: true});
-    return this.sendRecv('pin:write', payload);
+    return get(this, 'sendRecv').perform('pin:write', payload);
   },
 
   deleteRecord() {
@@ -69,7 +60,7 @@ export default DS.Adapter.extend({
   },
 
   findAll() {
-    return this.sendRecv('pin:list');
+    return get(this, 'sendRecv').perform('pin:list');
   },
 
   query() {
