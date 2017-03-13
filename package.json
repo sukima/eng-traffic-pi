@@ -1,6 +1,6 @@
 {
   "name": "eng-traffic-pi",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Frontend app to remotly control LEDS connected to a RaspberryPi GPIO",
   "license": "MIT",
   "author": "",
