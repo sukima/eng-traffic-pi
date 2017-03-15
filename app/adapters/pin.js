@@ -2,7 +2,7 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 const {
-  get, set, assert, isPresent, runInDebug,
+  get, set, assert, isPresent,
   inject: { service },
   RSVP: { Promise }
 } = Ember;
@@ -17,11 +17,9 @@ function socketPromise(socket, name, payload) {
       rejector = reject;
       socket.on(name, resolve);
       socket.on('error', reject);
-      runInDebug(() => console.log(`SocketIO: emit '${name}'`, payload));
       socket.emit(name, payload);
     }, `Adapter: 'pin' socket.io resolver`)
     .then(data => {
-      runInDebug(() => console.log(`SocketIO: response '${name}'`, data));
       if (isPresent(data.message)) {
         throw new AdapterError(null, data.message);
       }
