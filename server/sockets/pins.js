@@ -56,20 +56,20 @@ module.exports = function(io) {
 
     socket.on('pin:list', function () {
       console.log('SocketIO pin:list');
-      io.emit('pin:list', [...gpioPins.values()]);
+      socket.emit('pin:list', [...gpioPins.values()]);
     });
 
     socket.on('pin:read', function (payload = {}) {
       var pin = gpioPins.get(payload.num) || new GPIOPin.NullPin();
       console.log('SocketIO pin:read', util.inspect(payload));
-      io.emit('pin:read', pin);
+      socket.emit('pin:read', pin);
     });
 
     socket.on('pin:write', function (payload = {}) {
       var pin = gpioPins.get(payload.num) || new GPIOPin.MissingPin();
       pin.write(payload.value);
       console.log('SocketIO pin:write', util.inspect(payload));
-      io.emit('pin:write', pin);
+      socket.emit('pin:write', pin);
     });
   });
 };
