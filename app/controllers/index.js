@@ -32,10 +32,12 @@ export default Controller.extend({
         return selectedPin.save();
       }
       get(this, 'pins').forEach(pin => {
-        if (get(pin, 'group') !== group) {
-          return;
+        if (get(pin, 'group') !== group) { return; }
+        if (isEqual(pin, selectedPin)) {
+          pin.toggleProperty('enabled');
+        } else {
+          set(pin, 'enabled', false);
         }
-        set(pin, 'enabled', isEqual(pin, selectedPin));
         if (get(pin, 'dirtyType') === 'updated') {
           pin.save();
         }
